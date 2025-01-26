@@ -16,9 +16,7 @@
 ##### - Round the Battle Mechanics
 ##### - Have an Endless Mode After Story Completion
 
-## COMING SOON: 2D Version of the Game!
-<p align="center">
-  <img src=""C:\Users\meela\Pictures\Screenshots\b85c110b-38e7-4ddf-a8e0-495dcb32f158.webp"" width="350" title="hover text">
-</p>
+## COMING SOON: 2D Version of the Game! 
+<img align="left" width="150" height="150" src="TRPG Image.jpg">
 
 
