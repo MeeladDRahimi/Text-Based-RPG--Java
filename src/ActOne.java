@@ -17,8 +17,43 @@ public class ActOne {
         map.put("The Shivering Rift", List.of("Wailing Hollow", "Molten Mire", "Cinderfall Cliffs"));
         map.put("Molten Mire", List.of("The Emberwood", "Wailing Hollow", "The Shivering Rift"));
         this.gameMap = new GameMap(map, "Ashen Field");
-        this.equipmentList = List.of(new Equipment("Boots of Shimmer", 0, 2, 5, 100), new Equipment("Helmet of Lana", 0, 5, 0, 150), new Equipment("Chestplate of Heracles", 2, 3, 0, 200), new Equipment("Pants of Plague Matter", 0, 2, 0, 120), new Equipment("Amulet of Light", 0, 0, 3, 50), new Equipment("Sword of Kratos", 4, 0, 0, 300));
-        this.shopItemPool = List.of(new Equipment("Mystic Boots", 1, 2, 2, 120), new Equipment("Titanium Helmet", 0, 7, 0, 180), new Equipment("Hellspawn Gloves", 5, 5, 0, 250), new Equipment("Stealth Pants", 0, 3, 1, 100), new Equipment("Amulet of Darkness", 0, 0, 4, 200), new Equipment("Excalibur Sword", 6, 0, 0, 350), new Equipment("Shadow Boots", 1, 1, 3, 110), new Equipment("Golden Helmet", 0, 8, 0, 190), new Equipment("Infernal Chestplate", 4, 6, 0, 300), new Equipment("Frostbound Sword", 7, 0, 0, 400), new Equipment("Phantom Amulet", 0, 0, 5, 220), new Equipment("Thief's Pants", 0, 2, 2, 90), new Equipment("Knight's Boots", 2, 3, 1, 150), new Equipment("Dragon Helmet", 0, 10, 0, 350), new Equipment("Crimson Chestplate", 5, 7, 0, 320), new Equipment("Sword of Whispers", 8, 0, 0, 450), new Equipment("Moonlit Amulet", 0, 0, 6, 250), new Equipment("Assassin's Pants", 0, 4, 3, 130), new Equipment("Wanderer’s Boots", 2, 1, 2, 100), new Equipment("Runed Helmet", 0, 6, 1, 170), new Equipment("Guardian Chestplate", 3, 9, 0, 280), new Equipment("Stormbringer Sword", 9, 0, 0, 500), new Equipment("Celestial Amulet", 0, 0, 8, 300), new Equipment("Traveler’s Pants", 0, 2, 1, 80), new Equipment("Sorcerer’s Boots", 1, 2, 4, 140), new Equipment("Ancient Helmet", 0, 12, 0, 400), new Equipment("Warrior’s Chestplate", 6, 8, 0, 360), new Equipment("Cursed Sword", 10, 0, -2, 520), new Equipment("Lightbringer Amulet", 0, 0, 7, 280), new Equipment("Rogue’s Pants", 0, 3, 2, 120), new Equipment("Vindicator Boots", 3, 4, 1, 180));
+        this.equipmentList = List.of(new Equipment("Boots of Shimmer", 0, 2, 5, 100),
+                new Equipment("Helmet of Lana", 0, 5, 0, 150),
+                new Equipment("Chestplate of Heracles", 2, 3, 0, 200),
+                new Equipment("Pants of Plague Matter", 0, 2, 0, 120),
+                new Equipment("Amulet of Light", 0, 0, 3, 50),
+                new Equipment("Sword of Kratos", 4, 0, 0, 300));
+        this.shopItemPool = List.of(new Equipment("Mystic Boots", 1, 2, 2, 120),
+                new Equipment("Titanium Helmet", 0, 7, 0, 180),
+                new Equipment("Hellspawn Gloves", 5, 5, 0, 250),
+                new Equipment("Stealth Pants", 0, 3, 1, 100),
+                new Equipment("Amulet of Darkness", 0, 0, 4, 200),
+                new Equipment("Excalibur Sword", 6, 0, 0, 350),
+                new Equipment("Shadow Boots", 1, 1, 3, 110),
+                new Equipment("Golden Helmet", 0, 8, 0, 190),
+                new Equipment("Infernal Chestplate", 4, 6, 0, 300),
+                new Equipment("Frostbound Sword", 7, 0, 0, 400),
+                new Equipment("Phantom Amulet", 0, 0, 5, 220),
+                new Equipment("Thief's Pants", 0, 2, 2, 90),
+                new Equipment("Knight's Boots", 2, 3, 1, 150),
+                new Equipment("Dragon Helmet", 0, 10, 0, 350),
+                new Equipment("Crimson Chestplate", 5, 7, 0, 320),
+                new Equipment("Sword of Whispers", 8, 0, 0, 450),
+                new Equipment("Moonlit Amulet", 0, 0, 6, 250),
+                new Equipment("Assassin's Pants", 0, 4, 3, 130),
+                new Equipment("Wanderer’s Boots", 2, 1, 2, 100),
+                new Equipment("Runed Helmet", 0, 6, 1, 170),
+                new Equipment("Guardian Chestplate", 3, 9, 0, 280),
+                new Equipment("Stormbringer Sword", 9, 0, 0, 500),
+                new Equipment("Celestial Amulet", 0, 0, 8, 300),
+                new Equipment("Traveler’s Pants", 0, 2, 1, 80),
+                new Equipment("Sorcerer’s Boots", 1, 2, 4, 140),
+                new Equipment("Ancient Helmet", 0, 12, 0, 400),
+                new Equipment("Warrior’s Chestplate", 6, 8, 0, 360),
+                new Equipment("Cursed Sword", 10, 0, -2, 520),
+                new Equipment("Lightbringer Amulet", 0, 0, 7, 280),
+                new Equipment("Rogue’s Pants", 0, 3, 2, 120),
+                new Equipment("Vindicator Boots", 3, 4, 1, 180));
         this.shop = new Shop(this.shopItemPool);
     }
 

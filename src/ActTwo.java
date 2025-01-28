@@ -17,8 +17,41 @@ public class ActTwo {
         map.put("Infernal Spire", List.of("Hellfire Caverns", "The Searing Plains", "The Inferno Forge"));
         map.put("The Inferno Forge", List.of("Infernal Spire", "The Searing Plains", "Blighted Ash Wastes"));
         this.gameMap = new GameMap(map, "The Crag of Souls");
-        this.equipmentList = List.of(new Equipment("Boots of Ember", 0, 3, 7, 133), new Equipment("Helmet of Aegis", 0, 7, 0, 200), new Equipment("Chestplate of Inferno", 3, 4, 0, 267), new Equipment("Pants of Molten Grit", 0, 3, 0, 160), new Equipment("Amulet of Fire", 0, 0, 4, 67), new Equipment("Sword of the Titan", 5, 0, 0, 400));
-        this.shopItemPool = List.of(new Equipment("Fiery Boots", 1, 3, 3, 160), new Equipment("Obsidian Helmet", 0, 9, 0, 240), new Equipment("Hellspawn Rings", 7, 7, 0, 333), new Equipment("Extra Stealth Pants", 0, 4, 2, 133), new Equipment("Amulet of the Abyss", 0, 0, 5, 267), new Equipment("Infernal Sword", 8, 0, 0, 467), new Equipment("Glacial Boots", 0, 4, 4, 180), new Equipment("Warlord's Helmet", 2, 10, 0, 290), new Equipment("Shadowweave Chestplate", 5, 10, 2, 400), new Equipment("Sword of the Eclipse", 10, 0, 1, 520), new Equipment("Starlit Amulet", 0, 0, 7, 320), new Equipment("Nightstalker Pants", 1, 5, 5, 220), new Equipment("Lava Boots", 2, 3, 3, 200), new Equipment("Helmet of Titans", 3, 12, 0, 400), new Equipment("Bloodforged Chestplate", 8, 9, 0, 480), new Equipment("Stormrend Sword", 12, 0, 0, 600), new Equipment("Emerald Amulet", 0, 1, 8, 360), new Equipment("Phantom Pants", 1, 6, 4, 240), new Equipment("Hardened Boots", 3, 5, 1, 240), new Equipment("Helmet of Insight", 0, 8, 3, 310), new Equipment("Venom Chestplate", 6, 8, 2, 420), new Equipment("Frostfang Sword", 9, 0, 3, 570), new Equipment("Amulet of Eternity", 0, 0, 9, 400), new Equipment("Assassin's Boots", 2, 2, 6, 280), new Equipment("Crusader's Helmet", 4, 11, 0, 450), new Equipment("Dragon's Chestplate", 9, 11, 0, 520), new Equipment("Riftblade Sword", 13, 0, 0, 700), new Equipment("Timeworn Amulet", 0, 0, 11, 450), new Equipment("Hell-Chain Boots", 3, 3, 5, 300));
+        this.equipmentList = List.of(new Equipment("Boots of Ember", 0, 3, 7, 133),
+                new Equipment("Helmet of Aegis", 0, 7, 0, 200),
+                new Equipment("Chestplate of Inferno", 3, 4, 0, 267),
+                new Equipment("Pants of Molten Grit", 0, 3, 0, 160),
+                new Equipment("Amulet of Fire", 0, 0, 4, 67),
+                new Equipment("Sword of the Titan", 5, 0, 0, 400));
+        this.shopItemPool = List.of(new Equipment("Fiery Boots", 1, 3, 3, 160),
+                new Equipment("Obsidian Helmet", 0, 9, 0, 240),
+                new Equipment("Hellspawn Rings", 7, 7, 0, 333),
+                new Equipment("Extra Stealth Pants", 0, 4, 2, 133),
+                new Equipment("Amulet of the Abyss", 0, 0, 5, 267),
+                new Equipment("Infernal Sword", 8, 0, 0, 467),
+                new Equipment("Glacial Boots", 0, 4, 4, 180),
+                new Equipment("Warlord's Helmet", 2, 10, 0, 290),
+                new Equipment("Shadowweave Chestplate", 5, 10, 2, 400),
+                new Equipment("Sword of the Eclipse", 10, 0, 1, 520),
+                new Equipment("Starlit Amulet", 0, 0, 7, 320),
+                new Equipment("Nightstalker Pants", 1, 5, 5, 220),
+                new Equipment("Lava Boots", 2, 3, 3, 200),
+                new Equipment("Helmet of Titans", 3, 12, 0, 400),
+                new Equipment("Bloodforged Chestplate", 8, 9, 0, 480),
+                new Equipment("Stormrend Sword", 12, 0, 0, 600),
+                new Equipment("Emerald Amulet", 0, 1, 8, 360),
+                new Equipment("Phantom Pants", 1, 6, 4, 240),
+                new Equipment("Hardened Boots", 3, 5, 1, 240),
+                new Equipment("Helmet of Insight", 0, 8, 3, 310),
+                new Equipment("Venom Chestplate", 6, 8, 2, 420),
+                new Equipment("Frostfang Sword", 9, 0, 3, 570),
+                new Equipment("Amulet of Eternity", 0, 0, 9, 400),
+                new Equipment("Assassin's Boots", 2, 2, 6, 280),
+                new Equipment("Crusader's Helmet", 4, 11, 0, 450),
+                new Equipment("Dragon's Chestplate", 9, 11, 0, 520),
+                new Equipment("Riftblade Sword", 13, 0, 0, 700),
+                new Equipment("Timeworn Amulet", 0, 0, 11, 450),
+                new Equipment("Hell-Chain Boots", 3, 3, 5, 300));
         this.shop = new Shop(this.shopItemPool);
     }
 

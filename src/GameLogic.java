@@ -403,6 +403,13 @@ public class GameLogic {
                 for(int i = numEnemies; i > 0; --i) {
                     Enemy enemy = new Enemy();
                     new BattleSequence(player, enemy);
+                    if(player.getHp() <= 0){
+                        anythingToContinue();
+                        return;
+                    }
+                    if(enemy.getHp() > 0){
+                        return;
+                    }
                     --numEnemies;
                     player.setXp((int)((double)50.0F * ((double)1.0F + (double)currentAct * 0.2)));
                     player.addCurrency((int)((double)25.0F * ((double)1.0F + (double)currentAct * 0.2)));

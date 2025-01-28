@@ -17,8 +17,42 @@ public class ActThree {
         map.put("Demonforge Citadel", List.of("Lavaheart Basin", "The Scorched Abyss", "The Infernal Crucible"));
         map.put("The Infernal Crucible", List.of("The Scorched Abyss", "Demonforge Citadel", "The Cinderscape"));
         this.gameMap = new GameMap(map, "The Cinderscape");
-        this.equipmentList = List.of(new Equipment("Boots of the Scorching", 0, 4, 10, 177), new Equipment("Helmet of the Eternal Flame", 0, 10, 0, 267), new Equipment("Chestplate of the Infernal King", 4, 5, 0, 356), new Equipment("Pants of Lava Fury", 0, 4, 0, 213), new Equipment("Amulet of the Inferno", 0, 0, 6, 89), new Equipment("Sword of the Abyss", 7, 0, 0, 533));
-        this.shopItemPool = List.of(new Equipment("Molten Boots", 1, 4, 4, 213), new Equipment("Demon's Helmet", 0, 12, 0, 320), new Equipment("Hellspawn Chains", 9, 9, 0, 444), new Equipment("Phantom Pants", 0, 5, 3, 177), new Equipment("Amulet of the Underworld", 0, 0, 7, 355), new Equipment("Doombringer Sword", 10, 0, 0, 622), new Equipment("Blazing Boots", 2, 4, 5, 230), new Equipment("Helmet of Flames", 2, 13, 2, 340), new Equipment("Dragon's Chestplate", 10, 11, 0, 460), new Equipment("Silent Pants", 1, 6, 4, 210), new Equipment("Amulet of the Rift", 0, 1, 8, 380), new Equipment("Sword of Fury", 11, 0, 1, 640), new Equipment("Inferno Boots", 2, 3, 6, 220), new Equipment("Helmet of the Inferno", 3, 14, 1, 390), new Equipment("Fiery Chestguard", 11, 12, 0, 500), new Equipment("Shadow Pants", 1, 5, 5, 200), new Equipment("Amulet of Shadows", 0, 0, 9, 420), new Equipment("Sword of Shadows", 12, 0, 0, 680), new Equipment("Volcanic Boots", 1, 5, 6, 240), new Equipment("Helmet of the Abyss", 0, 13, 1, 360), new Equipment("Titanium Chestplate", 12, 10, 0, 480), new Equipment("Ghostwalker Pants", 2, 6, 5, 230), new Equipment("Amulet of Fire", 0, 0, 10, 450), new Equipment("Flameforged Sword", 13, 0, 0, 700), new Equipment("Eruption Boots", 2, 4, 6, 250), new Equipment("Helmet of Devastation", 3, 15, 2, 400), new Equipment("Crimson Chestplate", 11, 13, 1, 520), new Equipment("Nightstalker Pants", 1, 7, 5, 240), new Equipment("Amulet of Chaos", 0, 1, 11, 460), new Equipment("Sword of Eternal Flames", 14, 0, 1, 750));
+        this.equipmentList = List.of(new Equipment("Boots of the Scorching", 0, 4, 10, 177),
+                new Equipment("Helmet of the Eternal Flame", 0, 10, 0, 267),
+                new Equipment("Chestplate of the Infernal King", 4, 5, 0, 356),
+                new Equipment("Pants of Lava Fury", 0, 4, 0, 213),
+                new Equipment("Amulet of the Inferno", 0, 0, 6, 89),
+                new Equipment("Sword of the Abyss", 7, 0, 0, 533));
+        this.shopItemPool = List.of(new Equipment("Molten Boots", 1, 4, 4, 213),
+                new Equipment("Demon's Helmet", 0, 12, 0, 320),
+                new Equipment("Hellspawn Chains", 9, 9, 0, 444),
+                new Equipment("Phantom Pants", 0, 5, 3, 177),
+                new Equipment("Amulet of the Underworld", 0, 0, 7, 355),
+                new Equipment("Doombringer Sword", 10, 0, 0, 622),
+                new Equipment("Blazing Boots", 2, 4, 5, 230),
+                new Equipment("Helmet of Flames", 2, 13, 2, 340),
+                new Equipment("Dragon's Chestplate", 10, 11, 0, 460),
+                new Equipment("Silent Pants", 1, 6, 4, 210),
+                new Equipment("Amulet of the Rift", 0, 1, 8, 380),
+                new Equipment("Sword of Fury", 11, 0, 1, 640),
+                new Equipment("Inferno Boots", 2, 3, 6, 220),
+                new Equipment("Helmet of the Inferno", 3, 14, 1, 390),
+                new Equipment("Fiery Chestguard", 11, 12, 0, 500),
+                new Equipment("Shadow Pants", 1, 5, 5, 200),
+                new Equipment("Amulet of Shadows", 0, 0, 9, 420),
+                new Equipment("Sword of Shadows", 12, 0, 0, 680),
+                new Equipment("Volcanic Boots", 1, 5, 6, 240),
+                new Equipment("Helmet of the Abyss", 0, 13, 1, 360),
+                new Equipment("Titanium Chestplate", 12, 10, 0, 480),
+                new Equipment("Ghostwalker Pants", 2, 6, 5, 230),
+                new Equipment("Amulet of Fire", 0, 0, 10, 450),
+                new Equipment("Flameforged Sword", 13, 0, 0, 700),
+                new Equipment("Eruption Boots", 2, 4, 6, 250),
+                new Equipment("Helmet of Devastation", 3, 15, 2, 400),
+                new Equipment("Crimson Chestplate", 11, 13, 1, 520),
+                new Equipment("Nightstalker Pants", 1, 7, 5, 240),
+                new Equipment("Amulet of Chaos", 0, 1, 11, 460),
+                new Equipment("Sword of Eternal Flames", 14, 0, 1, 750));
         this.shop = new Shop(this.shopItemPool);
     }
 
