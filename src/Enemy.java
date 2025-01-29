@@ -32,26 +32,33 @@ public class Enemy extends Character {
     private String type; // Store enemy type
 
     public Enemy() {
-        super(randomName(), 100, 100, 0, 10, 10, 10, 0);
+        super("", 100, 100, 0, 10, 10, 10, 0); // Temporary empty name
+        this.type = assignRandomType(); // Assign type first
+        this.setName(generateNameBasedOnType(this.type)); // Now generate name accordingly
         this.randomize();
+
     }
 
-    private static String randomName() {
-        Random rand = new Random();
-        int typeIndex = rand.nextInt(types.length); // Randomly select type
-        String type = types[typeIndex];
 
+    private String assignRandomType() {
+        Random rand = new Random();
+        return types[rand.nextInt(types.length)]; // Randomly selects a type from the array
+    }
+
+    private static String generateNameBasedOnType(String type) {
+        Random rand = new Random();
         String adjective;
-        switch (typeIndex) {
-            case 0: adjective = fireAdjectives[rand.nextInt(fireAdjectives.length)]; break;
-            case 1: adjective = iceAdjectives[rand.nextInt(iceAdjectives.length)]; break;
-            case 2: adjective = undeadAdjectives[rand.nextInt(undeadAdjectives.length)]; break;
-            case 3: adjective = arcaneAdjectives[rand.nextInt(arcaneAdjectives.length)]; break;
-            default: adjective = "Unknown";
+
+        switch (type) {
+            case "🔥" -> adjective = fireAdjectives[rand.nextInt(fireAdjectives.length)];
+            case "❄️" -> adjective = iceAdjectives[rand.nextInt(iceAdjectives.length)];
+            case "☠️" -> adjective = undeadAdjectives[rand.nextInt(undeadAdjectives.length)];
+            case "🔮" -> adjective = arcaneAdjectives[rand.nextInt(arcaneAdjectives.length)];
+            default -> adjective = "Unknown";
         }
 
         String name = enemyNames[rand.nextInt(enemyNames.length)];
-        return type + " " + adjective + " " + name;
+        return type + adjective + " " + name;
     }
 
     public void randomize() {
@@ -74,5 +81,13 @@ public class Enemy extends Character {
         this.setSpeed((int) (playerSpeed * speedMultiplier));
 
         this.setHp(this.getMaxHp());
+    }
+
+    public String getType(){
+        return this.type;
+    }
+
+    public void setType(String type){
+        this.type = type;
     }
 }

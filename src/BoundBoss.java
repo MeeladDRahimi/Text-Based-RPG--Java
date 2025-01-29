@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class BoundBoss extends BastionBoss {
     public BoundBoss() {
-        this.setName("Final " + generateBossName());
+        this.setName("Final ");
         this.randomizeBoundBossStats();
     }
 

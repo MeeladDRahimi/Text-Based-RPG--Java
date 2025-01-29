@@ -1,4 +1,3 @@
-import java.io.PrintStream;
 import java.util.Random;
 
 public class BattleSequence {
@@ -39,6 +38,13 @@ public class BattleSequence {
     }
 
     private void playerTurn() {
+        if(imbuementTurnsLeft > 0){
+            imbuementTurnsLeft--;
+            if(imbuementTurnsLeft == 0){
+                playerElement = "None";
+                System.out.println("Your elemental imbuement has worn off...");
+            }
+        }
         System.out.println("\n" + player.getName() + "'s turn:");
         System.out.println("1. Light Attack (High Accuracy, Low Damage)");
         System.out.println("2. Medium Attack (Balanced)");
@@ -47,13 +53,6 @@ public class BattleSequence {
         System.out.println("5. Imbue Weapon with Element (Lasts 2 Turns)");
         printHealthBars();
 
-        if(imbuementTurnsLeft > 0){
-            imbuementTurnsLeft--;
-            if(imbuementTurnsLeft == 0){
-                playerElement = "None";
-                System.out.println("Your elemental imbuement has worn off...");
-            }
-        }
 
         int choice = GameLogic.readInt("Choose an action: ", 5);
         switch (choice) {
@@ -66,6 +65,7 @@ public class BattleSequence {
     }
 
     private void imbueWeapon(){
+        System.out.println(enemy.getType());
         System.out.println("Choose an element to imbue your weapon with:");
         System.out.println("1. 🔥");
         System.out.println("2. ❄️");
@@ -74,10 +74,10 @@ public class BattleSequence {
 
         int choice = GameLogic.readInt("Select an element: ", 4);
         switch(choice){
-            case 1 -> playerElement = "Fire";
-            case 2 -> playerElement = "Ice";
-            case 3 -> playerElement = "Undead";
-            case 4 -> playerElement = "Arcane";
+            case 1 -> playerElement = "🔥";
+            case 2 -> playerElement = "❄️";
+            case 3 -> playerElement = "☠️";
+            case 4 -> playerElement = "🔮";
         }
 
         imbuementTurnsLeft = 3;
@@ -108,6 +108,11 @@ public class BattleSequence {
             case "heavy" -> { baseDamage *= 2; accuracy = enemyStaggered ? 90 : 60; }
         }
 
+        // Apply elemental effectiveness if player is attacking
+        if (attacker instanceof Player && !playerElement.equals("None")) {
+            baseDamage = applyElementalEffectiveness(baseDamage, enemy.getType());
+        }
+
         if (new Random().nextInt(100) < accuracy) {
             int damage = Math.max(baseDamage - defender.getDefense(), 1);
             defender.setHp(defender.getHp() - damage);
@@ -115,6 +120,31 @@ public class BattleSequence {
         } else {
             System.out.println(attacker.getName() + " missed their attack!");
         }
+    }
+
+    private int applyElementalEffectiveness(int baseDamage, String enemyType) {
+        if (isSuperEffective(playerElement, enemyType)) {
+            System.out.println("It's super effective!");
+            return (int) (baseDamage * 1.5);
+        } else if (isNotVeryEffective(playerElement, enemyType)) {
+            System.out.println("It's not very effective...");
+            return (int) (baseDamage * 0.75);
+        }
+        return baseDamage;
+    }
+
+    private boolean isSuperEffective(String attackType, String enemyType) {
+        return (attackType.contains("🔥") && enemyType.contains("❄️")) ||
+                (attackType.contains("❄️") && enemyType.contains("☠️")) ||
+                (attackType.contains("☠️") && enemyType.contains("🔮")) ||
+                (attackType.contains("🔮") && enemyType.contains("🔥"));
+    }
+
+    private boolean isNotVeryEffective(String attackType, String enemyType) {
+        return (attackType.equals("🔥") && enemyType.contains("🔮")) ||
+                (attackType.equals("❄️") && enemyType.contains("🔥")) ||
+                (attackType.equals("☠️") && enemyType.contains("❄️")) ||
+                (attackType.equals("🔮") && enemyType.contains("☠️"));
     }
 
     private void parry() {
@@ -135,6 +165,8 @@ public class BattleSequence {
             System.out.println(enemy.getName() + " has been defeated!");
         }
     }
+
+
 
     private void resetPlayerDefense() {
         player.setDefense(originalPlayerDefense);
@@ -162,6 +194,9 @@ public class BattleSequence {
 
     private void printHealthBars() {
         System.out.println(buildBar(player, "\u2665") + "\t" + buildBar(enemy, "\u2661"));
+        if(!playerElement.equals("None")){
+            System.out.print(playerElement);
+        }
         System.out.println(player.getName() + ": " + player.getHp() + "/" + player.getMaxHp() +
                 "\t" + enemy.getName() + ": " + enemy.getHp() + "/" + enemy.getMaxHp());
     }
