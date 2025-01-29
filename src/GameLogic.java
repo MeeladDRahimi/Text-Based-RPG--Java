@@ -9,7 +9,6 @@ import java.util.Set;
 public class GameLogic {
     static Scanner scanner;
     static Player player;
-    static Shop shop;
     static GameMap gameMap;
     static Set<String> defeatedBastions;
     private static boolean playerHasDefeatedBoundBoss;
@@ -350,10 +349,6 @@ public class GameLogic {
             }
         }
 
-    }
-
-    public static void defeatBoundBoss() {
-        playerHasDefeatedBoundBoss = true;
     }
 
     private static void resetBoundBossStatus() {

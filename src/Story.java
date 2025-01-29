@@ -1,6 +1,4 @@
 public class Story {
-    public Story() {
-    }
 
     public static void printIntroPartOne() {
         GameLogic.clearConsole();

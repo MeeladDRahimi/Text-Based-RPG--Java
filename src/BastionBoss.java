@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class BastionBoss extends Enemy {
     private static final String[] bossAdjectives = new String[]{"Mighty", "Furious", "Hellish"};
-    private static final String[] bossName = new String[]{"Azazel", "Leviathan", "Abaddon", "Legion"};
+    private static final String[] bossName = new String[]{"Azazel", "Leviathan", "Abaddon", "Legion", "Baal", "Mephisto", "Diablo", "Azmodan", "Urzael", "Rakanoth", "Astaroth", "Lilith"};
 
     public BastionBoss() {
         this.setName(generateBossName());

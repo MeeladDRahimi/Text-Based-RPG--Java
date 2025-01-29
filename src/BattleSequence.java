@@ -1,5 +1,3 @@
-import com.sun.management.GarbageCollectionNotificationInfo;
-
 import java.io.PrintStream;
 import java.util.Random;
 
@@ -8,160 +6,163 @@ public class BattleSequence {
     private Enemy enemy;
     private int originalPlayerDefense;
     private int originalPlayerHP;
-    private int playerHearts, enemyHearts;
+    private boolean enemyStaggered = false;
+    private boolean playerGetsExtraTurn = false;
+    private String playerElement = "None";
+    private int imbuementTurnsLeft = 0;
+
 
     public BattleSequence(Player player, Enemy enemy) {
         this.player = player;
         this.enemy = enemy;
         this.originalPlayerDefense = player.getDefense();
         this.originalPlayerHP = player.getMaxHp();
-        calculatePlayerBHearts(player);
-        calculateEnemyBHearts(enemy);
-        this.startBattle();
+        startBattle();
         resetPlayerHP();
-
     }
 
     private void startBattle() {
         System.out.println(this.enemy.getName() + " appears!");
 
         while (this.player.getHp() > 0 && this.enemy.getHp() > 0) {
-            this.playerTurn();
+            playerTurn();
+            if (playerGetsExtraTurn) {
+                playerGetsExtraTurn = false;
+                playerTurn();
+            }
             if (this.enemy.getHp() > 0) {
-                this.enemyTurn();
+                enemyTurn();
             }
         }
-        this.determineOutcome();
-        this.resetPlayerDefense();
+        determineOutcome();
+        resetPlayerDefense();
     }
 
     private void playerTurn() {
-        Story.boldText();
-        System.out.println("\n" + this.player.getName() + "'s turn:");
-        Story.resetTextColor();
-        System.out.println("1. Attack (" + (this.player.getEffectiveDamage() - this.enemy.getDefense() % 3) + " damage)");
-        System.out.println("2. Defend (2 defense)");
-        printHealthBars(this.player, this.enemy);
-        Story.resetTextColor();
-        int choice = GameLogic.readInt("Choose an action: ", 2);
-        if (choice == 1) {
-            this.attack(this.player, this.enemy);
-        } else if (choice == 2) {
-            this.defend(this.player);
+        System.out.println("\n" + player.getName() + "'s turn:");
+        System.out.println("1. Light Attack (High Accuracy, Low Damage)");
+        System.out.println("2. Medium Attack (Balanced)");
+        System.out.println("3. Heavy Attack (High Damage, Low Accuracy)");
+        System.out.println("4. Parry (Negates attack and grants an extra turn if successful)");
+        System.out.println("5. Imbue Weapon with Element (Lasts 2 Turns)");
+        printHealthBars();
+
+        if(imbuementTurnsLeft > 0){
+            imbuementTurnsLeft--;
+            if(imbuementTurnsLeft == 0){
+                playerElement = "None";
+                System.out.println("Your elemental imbuement has worn off...");
+            }
         }
 
+        int choice = GameLogic.readInt("Choose an action: ", 5);
+        switch (choice) {
+            case 1 -> attack(player, enemy, "light");
+            case 2 -> attack(player, enemy, "medium");
+            case 3 -> attack(player, enemy, "heavy");
+            case 4 -> parry();
+            case 5 -> this.imbueWeapon();
+        }
+    }
+
+    private void imbueWeapon(){
+        System.out.println("Choose an element to imbue your weapon with:");
+        System.out.println("1. 🔥");
+        System.out.println("2. ❄️");
+        System.out.println("3. ☠️");
+        System.out.println("4. 🔮");
+
+        int choice = GameLogic.readInt("Select an element: ", 4);
+        switch(choice){
+            case 1 -> playerElement = "Fire";
+            case 2 -> playerElement = "Ice";
+            case 3 -> playerElement = "Undead";
+            case 4 -> playerElement = "Arcane";
+        }
+
+        imbuementTurnsLeft = 3;
+        System.out.println("Your weapon is now imbued with " + playerElement + " energy for 2 turns!");
     }
 
     private void enemyTurn() {
-        Story.boldText();
-        System.out.println("\n" + this.enemy.getName() + "'s turn:");
-        Story.resetTextColor();
+        System.out.println("\n" + enemy.getName() + "'s turn:");
+        if (enemyStaggered) {
+            System.out.println(enemy.getName() + " is staggered! All attacks have heightened accuracy!");
+            enemyStaggered = false;
+        }
+
         Random rand = new Random();
-        int action = rand.nextInt(2);
-        if (action == 0) {
-            this.attack(this.enemy, this.player);
-        } else {
-            this.defend(this.enemy);
-        }
-
+        int action = rand.nextInt(3);
+        if (action == 0) attack(enemy, player, "light");
+        else if (action == 1) attack(enemy, player, "medium");
+        else attack(enemy, player, "heavy");
     }
 
-    private void attack(Character attacker, Character defender) {
-        if (this.attemptDodge(defender)) {
-            System.out.println(defender.getName() + " dodged the attack!");
-        } else {
-            int damage = (attacker instanceof Player ? ((Player) attacker).getEffectiveDamage() : attacker.getStrength()) - (defender instanceof Player ? ((Player) defender).getEffectiveDefense() : defender.getDefense()) % 3;
-            damage = Math.max(damage, 0);
+    private void attack(Character attacker, Character defender, String attackType) {
+        int baseDamage = attacker.getStrength();
+        int accuracy = 100;
+
+        switch (attackType) {
+            case "light" -> { baseDamage = Math.max(baseDamage / 2, 1); accuracy = enemyStaggered ? 100 : 95; }
+            case "medium" -> { baseDamage = (int)(baseDamage * 0.75); accuracy = enemyStaggered ? 100 : 85; }
+            case "heavy" -> { baseDamage *= 2; accuracy = enemyStaggered ? 90 : 60; }
+        }
+
+        if (new Random().nextInt(100) < accuracy) {
+            int damage = Math.max(baseDamage - defender.getDefense(), 1);
             defender.setHp(defender.getHp() - damage);
-            PrintStream var10000 = System.out;
-            String var10001 = attacker.getName();
-            var10000.println(var10001 + " attacks " + defender.getName() + " for " + damage + " damage.");
+            System.out.println(attacker.getName() + " used a " + attackType + " attack dealing " + damage + " damage!");
+        } else {
+            System.out.println(attacker.getName() + " missed their attack!");
         }
-
     }
 
-    private void defend(Character character) {
-        character.setDefense(character.getDefense() + 2);
-        System.out.println(character.getName() + " defends, increasing defense by 2");
+    private void parry() {
+        System.out.println(player.getName() + " prepares to parry...");
+        if (new Random().nextInt(100) < 50) {
+            System.out.println("Successful parry! " + enemy.getName() + " is staggered and vulnerable next turn!");
+            enemyStaggered = true;
+            playerGetsExtraTurn = true;
+        } else {
+            System.out.println("Parry failed! " + player.getName() + " takes full damage next turn.");
+        }
     }
 
     private void determineOutcome() {
-        if (this.player.getHp() <= 0) {
-            System.out.println(this.player.getName() + " has been defeated! You faint.");
-        } else if (this.enemy.getHp() <= 0) {
-            System.out.println(this.enemy.getName() + " has been defeated!");
+        if (player.getHp() <= 0) {
+            System.out.println(player.getName() + " has been defeated! You faint.");
+        } else if (enemy.getHp() <= 0) {
+            System.out.println(enemy.getName() + " has been defeated!");
         }
-
     }
 
     private void resetPlayerDefense() {
-        this.player.setDefense(this.originalPlayerDefense);
-        System.out.println(this.player.getName() + "'s defense has worn off.");
+        player.setDefense(originalPlayerDefense);
+        System.out.println(player.getName() + "'s defense has returned to normal.");
     }
 
     private void resetPlayerHP() {
-        this.player.setHp(this.originalPlayerHP);
-        System.out.println(this.player.getName() + "'s health eventually recovers to full health.");
+        player.setHp(originalPlayerHP);
+        System.out.println(player.getName() + "'s health is restored to full.");
         GameLogic.anythingToContinue();
     }
 
-    private boolean attemptDodge(Character defender) {
-        Random rand = new Random();
-        int dodgeChance = defender.getSpeed() * 2;
-        return rand.nextInt(100) < dodgeChance;
-    }
-
-    private String buildBar(Player player){
-        Story.boldText();
+    private String buildBar(Character character, String symbol) {
         StringBuilder bar = new StringBuilder("|");
-        Story.resetTextColor();
-        Story.boldRedTextColor();
-        int hearts = (int)Math.ceil((double) player.getHp()/player.getMaxHp() * 10);
-        for(int i = 0; i < hearts; i++){
-            bar.append("\u2665");
+        int hearts = (int) Math.ceil((double) character.getHp() / character.getMaxHp() * 10);
+        for (int i = 0; i < hearts; i++) {
+            bar.append(symbol);
         }
-        for(int i = hearts; i < 10 ;i++){
+        for (int i = hearts; i < 10; i++) {
             bar.append("-");
         }
         bar.append("|");
         return bar.toString();
     }
 
-    private String buildBar(Enemy enemy){
-        StringBuilder bar = new StringBuilder("|");
-        int hearts = (int)Math.ceil((double) enemy.getHp()/enemy.getMaxHp() * 10);
-        for(int i = 0; i < hearts; i++){
-            bar.append("\u2661");
-        }
-        for(int i = hearts; i < 10;i++){
-            bar.append("-");
-        }
-        bar.append("|");
-        return bar.toString();
-    }
-
-    private  String getPlayerBar(Player player){
-        return buildBar(player);
-    }
-
-    private  String getEnemyBar(Enemy enemy){
-        return buildBar(enemy);
-    }
-
-    private void printHealthBars(Player player, Enemy enemy){
-        System.out.println(getPlayerBar(player) + "\t" + getEnemyBar(enemy));
+    private void printHealthBars() {
+        System.out.println(buildBar(player, "\u2665") + "\t" + buildBar(enemy, "\u2661"));
         System.out.println(player.getName() + ": " + player.getHp() + "/" + player.getMaxHp() +
                 "\t" + enemy.getName() + ": " + enemy.getHp() + "/" + enemy.getMaxHp());
     }
-
-    private void calculatePlayerBHearts(Player player){
-        double heartValue = (double)player.getMaxHp() / 10;
-        playerHearts = (int)Math.ceil(player.getHp()/heartValue);
-    }
-
-    private void calculateEnemyBHearts(Enemy enemy){
-        double heartValue = (double)enemy.getMaxHp() / 10;
-        enemyHearts = (int)Math.ceil(enemy.getHp()/heartValue);
-    }
-
 }

@@ -1,8 +1,35 @@
 import java.util.Random;
 
 public class Enemy extends Character {
-    private static final String[] adjectives = new String[]{"Hairy", "Sickly", "Stinky", "Fat", "Putrid", "Fierce", "Scary", "Bald", "Ugly"};
-    private static final String[] enemyNames = new String[]{"Zombie", "Monster", "Sally", "Harry", "Bob", "Demon", "Demon-Chicken", "Pig", "Cyclops"};
+    private static final String[] fireAdjectives = new String[]{
+            "Infernal", "Hellbound", "Emberborn", "Ashen", "Scorching", "Charred", "Molten", "Pyroclastic", "Brimstone", "Blazing"
+    };
+
+    private static final String[] iceAdjectives = new String[]{
+            "Frostbane", "Glacial", "Icebound", "Blizzard-born", "Frozen", "Snowdrift", "Permafrost", "Shardborn", "Arctic", "Cryogenic"
+    };
+
+    private static final String[] undeadAdjectives = new String[]{
+            "Boneclaw", "Wraithborn", "Hollow", "Gravebound", "Phantom", "Necrotic", "Ghoul-ridden", "Lichborne", "Shadowforged", "Deathbound"
+    };
+
+    private static final String[] arcaneAdjectives = new String[]{
+            "Voidborn", "Abyssal", "Stormforged", "Celestial", "Aetherborn", "Titanborn", "Behemothic", "Runed", "Warped", "Draconic"
+    };
+
+    private static final String[] enemyNames = new String[]{
+            "Warlord", "Revenant", "Stalker", "Titan", "Lord", "Demon", "Behemoth", "Specter", "Lich", "Abomination",
+            "Wraith", "Phantom", "Ghoul", "Shade", "Gargoyle", "Serpent", "Dragon", "Fiend", "Overlord", "Necromancer",
+            "Warlock", "Cultist", "Brute", "Terror", "Harbinger", "Sentinel", "Colossus", "Monstrosity", "Nightmare", "Devourer",
+            "Abysswalker", "Voidborn", "Hellhound", "Ravager", "Plaguebearer", "Corruptor", "Dreadknight", "Darkspawn", "Soulreaper", "Tormentor",
+            "Executioner", "Doombringer", "Stormcaller", "Pyromancer", "Frostbringer", "Ironclad", "Shadowmancer", "Bloodfiend", "Desecrator", "Bonecrusher"
+    };
+
+    private static final String[] types = new String[]{
+            "🔥", "❄️", "☠️", "🔮"
+    };
+
+    private String type; // Store enemy type
 
     public Enemy() {
         super(randomName(), 100, 100, 0, 10, 10, 10, 0);
@@ -11,9 +38,20 @@ public class Enemy extends Character {
 
     private static String randomName() {
         Random rand = new Random();
-        String adjective = adjectives[rand.nextInt(adjectives.length)];
+        int typeIndex = rand.nextInt(types.length); // Randomly select type
+        String type = types[typeIndex];
+
+        String adjective;
+        switch (typeIndex) {
+            case 0: adjective = fireAdjectives[rand.nextInt(fireAdjectives.length)]; break;
+            case 1: adjective = iceAdjectives[rand.nextInt(iceAdjectives.length)]; break;
+            case 2: adjective = undeadAdjectives[rand.nextInt(undeadAdjectives.length)]; break;
+            case 3: adjective = arcaneAdjectives[rand.nextInt(arcaneAdjectives.length)]; break;
+            default: adjective = "Unknown";
+        }
+
         String name = enemyNames[rand.nextInt(enemyNames.length)];
-        return adjective + " " + name;
+        return type + " " + adjective + " " + name;
     }
 
     public void randomize() {
@@ -23,10 +61,18 @@ public class Enemy extends Character {
         int playerDefense = GameLogic.player.getDefense();
         int playerSpeed = GameLogic.player.getSpeed();
         int currentAct = GameLogic.getCurrentAct();
-        this.setMaxHp((int)((double)playerMaxHp * (0.8 + rand.nextDouble() * 0.4) * ((double)1.0F + (double)currentAct * 0.2)));
-        this.setDefense((int)((double)playerDefense * (0.8 + rand.nextDouble() * 0.4) * ((double)1.0F + (double)currentAct * 0.1)));
-        this.setStrength((int)((double)playerStrength * (0.8 + rand.nextDouble() * 0.4) * ((double)1.0F + (double)currentAct * 0.15)));
-        this.setSpeed((int)((double)playerSpeed * (0.8 + rand.nextDouble() * 0.4) * ((double)1.0F + (double)currentAct * 0.1)));
+
+        // Balance the enemy stats more fairly
+        double healthMultiplier = 0.9 + rand.nextDouble() * 0.3 + (currentAct * 0.15);
+        double strengthMultiplier = 0.85 + rand.nextDouble() * 0.25 + (currentAct * 0.12);
+        double defenseMultiplier = 0.85 + rand.nextDouble() * 0.25 + (currentAct * 0.1);
+        double speedMultiplier = 0.85 + rand.nextDouble() * 0.25 + (currentAct * 0.1);
+
+        this.setMaxHp((int) (playerMaxHp * healthMultiplier));
+        this.setDefense((int) (playerDefense * defenseMultiplier));
+        this.setStrength((int) (playerStrength * strengthMultiplier));
+        this.setSpeed((int) (playerSpeed * speedMultiplier));
+
         this.setHp(this.getMaxHp());
     }
 }
