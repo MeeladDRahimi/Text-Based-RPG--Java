@@ -10,13 +10,10 @@
 ##### - Battle Sequence (Randomized Enemies, Bosses, Boss Loot, etc.)
 
 ### Future Fixes and Additions:
-##### - Optimize Gameplay and Game Flow
-##### - Add Quests
-##### - Add Achievements 
-##### - Round the Battle Mechanics
-##### - Have an Endless Mode After Story Completion
+##### - Better Organization (Comments, MVC, Contracts, UML Diagram)
 
-## COMING SOON: 2D Version of the Game! 
+
+## COMING SOON: 2D Version of the Game after the next and final Patch!!!
 <img align="left" width="150" height="150" src="TRPG Image.jpg">
 
 
