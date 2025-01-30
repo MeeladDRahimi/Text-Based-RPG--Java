@@ -13,7 +13,7 @@
 ##### - Better Organization (Comments, MVC, Contracts, UML Diagram)
 
 
-## COMING SOON: 2D Version of the Game after the next and final Patch!!!
+## COMING SOON: 2D Version of the Game After the Next and Final Patch!!!
 <img align="left" width="150" height="150" src="TRPG Image.jpg">
 
 
