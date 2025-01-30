@@ -1,11 +1,26 @@
 import java.util.Random;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Represents a Bastion Boss in the game, a special type of boss with randomized stats
+ * that varies based on the current act and region. Each boss has a unique type, name,
+ * and stats depending on where they are located within the game world.
+ */
 public class BastionBoss extends Enemy {
 
+    /**
+     * Default constructor for BastionBoss.
+     * This initializes the boss by setting its attributes based on the current game map.
+     */
     public BastionBoss() {
-        bossSequences(GameLogic.gameMap);
+        bossSequences(GameLogic.gameMap); // Initialize the boss with the appropriate sequence based on the current map
     }
 
+    /**
+     * Randomizes the Bastion Boss stats based on the player's stats and the current act.
+     * This includes adjusting the boss's HP, strength, defense, and speed.
+     */
     private void randomizeBossStats() {
         Random rand = new Random();
         int playerMaxHp = GameLogic.player.getMaxHp();
@@ -13,211 +28,107 @@ public class BastionBoss extends Enemy {
         int playerDefense = GameLogic.player.getDefense();
         int playerSpeed = GameLogic.player.getSpeed();
         int currentAct = GameLogic.getCurrentAct();
+
+        // Randomly scale Bastion Boss stats based on the player's stats and current act
         this.setMaxHp((int)((double)playerMaxHp * (0.9 + rand.nextDouble() * (double)0.5F) * ((double)1.0F + (double)currentAct * (double)0.25F)));
-        this.setHp(this.getMaxHp());
+        this.setHp(this.getMaxHp()); // Set current HP to max HP
         this.setStrength((int)((double)playerStrength * (1.3 + rand.nextDouble() * (double)0.5F) * ((double)1.0F + (double)currentAct * 0.2)));
         this.setDefense((int)((double)playerDefense * (1.3 + rand.nextDouble() * (double)0.5F) * ((double)1.0F + (double)currentAct * 0.2)));
         this.setSpeed((int)((double)playerSpeed * (0.8 + rand.nextDouble() * (double)0.5F) * ((double)1.0F + (double)currentAct * 0.1)));
     }
 
+    // Predefined types for Bastion Bosses, each representing a different element
     private static final String[] types = new String[]{
             "🔥", "❄️", "☠️", "🔮"
     };
 
+    /**
+     * Determines the boss sequence for the current game based on the act and region.
+     * This method maps the current act and region to a specific boss and assigns its attributes.
+     *
+     * @param map The current game map containing regions and the player's position.
+     */
     private void bossSequences(GameMap map) {
-        System.out.println(map.getCurrRegionName());
+        System.out.println(map.getCurrRegionName()); // Print the current region name for debugging
+        int act = GameLogic.getCurrentAct();
+        String region = map.getCurrRegionName();
 
-        if (GameLogic.getCurrentAct() == 1) {
-            if (map.getCurrRegionName().equals("Ashen Field")) {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Pyre Lord Surtur";
-                this.setName(bossName);
-                randomizeBossStats();
-                // Add fire-specific abilities or attributes for this boss
-            }
+        // Define boss mapping for each act
+        Map<String, String[]> bossMap = getBossMap(act);
 
-            else if (map.getCurrRegionName().equals("The Emberwood")) {
-                String bossType = types[1]; // ice type
-                this.setType(bossType);
-                String bossName = bossType + "Frost Warden Ignis";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
+        // Default boss (if region is not found in map)
+        String[] defaultBoss = {"Fire", "Arcanight"};
 
-            else if (map.getCurrRegionName().equals("Wailing Hollow")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Skeleton Queen Merridia";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("Cinderfall Cliffs")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Plague Bringer Dermese";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Shivering Rift")) {
-                String bossType = types[3]; // Arcane type
-                this.setType(bossType);
-                String bossName = bossType + "Banshee Queen";
-                this.setName(bossName);
-                randomizeBossStats();
-            } else {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Tarfiend Belphegor";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-        } else if (GameLogic.getCurrentAct() == 2) {
-            if (map.getCurrRegionName().equals("The Crag of Souls")) {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Diablo";
-                this.setName(bossName);
-                randomizeBossStats();
-                // Add fire-specific abilities or attributes for this boss
-            }
-
-            else if (map.getCurrRegionName().equals("Hellfire Caverns")) {
-                String bossType = types[1]; // ice type
-                this.setType(bossType);
-                String bossName = bossType + "Borealis, the Eternal Blizzard";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("Blighted Ash Wastes")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Morgrim, the Soul Devourer";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Searing Plains")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Malrik, the Plague Revenant";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("Infernal Spire")) {
-                String bossType = types[3]; // arcane type
-                this.setType(bossType);
-                String bossName = bossType + "Umbra, the Riftborn Magnus";
-                this.setName(bossName);
-                randomizeBossStats();
-            } else {
-                String bossType = types[0]; // fire type
-                this.setType(bossType);
-                String bossName = bossType + "Ignisfang, the Hellborn Wyrm";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-        } else if (GameLogic.getCurrentAct() == 3) {
-            if (map.getCurrRegionName().equals("The Cinderscape")) {
-                String bossType = types[0]; // fire type
-                this.setType(bossType);
-                String bossName = bossType + "Infernis";
-                this.setName(bossName);
-                randomizeBossStats();
-                // Add fire-specific abilities or attributes for this boss
-            }
-
-            else if (map.getCurrRegionName().equals("Fiendish Depths")) {
-                String bossType = types[1]; // ice type
-                this.setType(bossType);
-                String bossName = bossType + "Cryovex";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("Demonforge Citadel")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Thanadrax";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Infernal Crucible")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Gilded Thanadrax";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("Lavaheart Basin")) {
-                String bossType = types[3]; // arcane type
-                this.setType(bossType);
-                String bossName = bossType + "Vaelith, the Arcane Lich";
-                this.setName(bossName);
-                randomizeBossStats();
-            } else {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Moltres, Copyright Blazer";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-        }
-        else{
-            if (map.getCurrRegionName().equals("The Blazing Chasm")) {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Mephisto";
-                this.setName(bossName);
-                randomizeBossStats();
-                // Add fire-specific abilities or attributes for this boss
-            }
-
-            else if (map.getCurrRegionName().equals("The Blood Furnace")) {
-                String bossType = types[1]; // ice type
-                this.setType(bossType);
-                String bossName = bossType + "Frostreaver, the Rimeborn Warlord";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Screaming Pit")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Malkrow, Bird of Death";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Eternal Flame")) {
-                String bossType = types[2]; // undead type
-                this.setType(bossType);
-                String bossName = bossType + "Obituscary, Bringer of Bad News";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-
-            else if (map.getCurrRegionName().equals("The Gate of Despair")) {
-                String bossType = types[3]; // arcane type
-                this.setType(bossType);
-                String bossName = bossType + "Whodeknee";
-                this.setName(bossName);
-                randomizeBossStats();
-            } else {
-                String bossType = types[0]; // Fire type
-                this.setType(bossType);
-                String bossName = bossType + "Arcanight";
-                this.setName(bossName);
-                randomizeBossStats();
-            }
-        }
+        // Get boss data from map or default if region is not found
+        String[] bossData = bossMap.getOrDefault(region, defaultBoss);
+        setBossAttributes(bossData[0], bossData[1]); // Set boss type, name, and randomize stats
     }
 
+    /**
+     * Returns a mapping of regions to their respective boss types and names
+     * based on the current act. The map is used to determine the correct boss
+     * for each region in the game.
+     *
+     * @param act The current act in the game (e.g., Act 1, Act 2, etc.).
+     * @return A map containing region names as keys and an array with boss type and name as values.
+     */
+    private Map<String, String[]> getBossMap(int act) {
+        Map<String, String[]> bossMap = new HashMap<>();
 
+        switch (act) {
+            case 1:
+                // Act 1 region to boss mappings
+                bossMap.put("Ashen Field", new String[]{"🔥", "Pyre Lord Surtur"});
+                bossMap.put("The Emberwood", new String[]{"❄️", "Frost Warden Ignis"});
+                bossMap.put("Wailing Hollow", new String[]{"☠️", "Skeleton Queen Merridia"});
+                bossMap.put("Cinderfall Cliffs", new String[]{"☠️", "Plague Bringer Dermese"});
+                bossMap.put("The Shivering Rift", new String[]{"🔮", "Banshee Queen"});
+                bossMap.put("Default", new String[]{"🔥", "Tarfiend Belphegor"});
+                break;
+
+            case 2:
+                // Act 2 region to boss mappings
+                bossMap.put("The Crag of Souls", new String[]{"🔥", "Diablo"});
+                bossMap.put("Hellfire Caverns", new String[]{"❄️", "Borealis, the Eternal Blizzard"});
+                bossMap.put("Blighted Ash Wastes", new String[]{"☠️", "Morgrim, the Soul Devourer"});
+                bossMap.put("The Searing Plains", new String[]{"☠️", "Malrik, the Plague Revenant"});
+                bossMap.put("Infernal Spire", new String[]{"🔮", "Umbra, the Riftborn Magnus"});
+                bossMap.put("Default", new String[]{"🔥", "Ignisfang, the Hellborn Wyrm"});
+                break;
+
+            case 3:
+                // Act 3 region to boss mappings
+                bossMap.put("The Cinderscape", new String[]{"🔥", "Infernis"});
+                bossMap.put("Fiendish Depths", new String[]{"❄️", "Cryovex"});
+                bossMap.put("Demonforge Citadel", new String[]{"☠️", "Thanadrax"});
+                bossMap.put("The Infernal Crucible", new String[]{"☠️", "Gilded Thanadrax"});
+                bossMap.put("Lavaheart Basin", new String[]{"🔮", "Vaelith, the Arcane Lich"});
+                bossMap.put("Default", new String[]{"🔥", "Moltres, Copyright Blazer"});
+                break;
+
+            default:
+                // Default boss mapping if the act is not recognized
+                bossMap.put("The Blazing Chasm", new String[]{"🔥", "Mephisto"});
+                bossMap.put("The Blood Furnace", new String[]{"❄️", "Frostreaver, the Rimeborn Warlord"});
+                bossMap.put("The Screaming Pit", new String[]{"☠️", "Malkrow, Bird of Death"});
+                bossMap.put("The Eternal Flame", new String[]{"☠️", "Obituscary, Bringer of Bad News"});
+                bossMap.put("The Gate of Despair", new String[]{"🔮", "Whodeknee"});
+                bossMap.put("Default", new String[]{"🔥", "Arcanight"});
+                break;
+        }
+
+        return bossMap; // Return the map with region-boss data
+    }
+
+    /**
+     * Sets the boss type, name, and randomizes stats based on the type and name.
+     *
+     * @param type The type of the boss (e.g., "🔥", "❄️").
+     * @param name The name of the boss.
+     */
+    private void setBossAttributes(String type, String name) {
+        this.setType(type); // Set the boss's element type (e.g., Fire, Ice)
+        this.setName(type + " " + name); // Set the boss's full name (e.g., Fire Pyre Lord Surtur)
+        randomizeBossStats(); // Randomize the boss's stats based on the player's stats
+    }
 }

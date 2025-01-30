@@ -2,14 +2,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the second act in the game, containing the map, equipment, and shop functionality.
+ */
 public class ActTwo {
     private GameMap gameMap;
     private List<Equipment> equipmentList;
     private Shop shop;
     private List<Equipment> shopItemPool;
 
+    /**
+     * Constructor for ActTwo. Initializes the map, equipment list, and shop with items.
+     */
     public ActTwo() {
-        Map<String, List<String>> map = new HashMap();
+        // Initializing map for ActTwo locations and their connected regions
+        Map<String, List<String>> map = new HashMap<>();
         map.put("The Crag of Souls", List.of("Hellfire Caverns", "Blighted Ash Wastes", "The Searing Plains"));
         map.put("Hellfire Caverns", List.of("The Crag of Souls", "The Searing Plains", "Infernal Spire"));
         map.put("The Searing Plains", List.of("The Crag of Souls", "Blighted Ash Wastes", "Infernal Spire"));
@@ -17,13 +24,20 @@ public class ActTwo {
         map.put("Infernal Spire", List.of("Hellfire Caverns", "The Searing Plains", "The Inferno Forge"));
         map.put("The Inferno Forge", List.of("Infernal Spire", "The Searing Plains", "Blighted Ash Wastes"));
         this.gameMap = new GameMap(map, "The Crag of Souls");
-        this.equipmentList = List.of(new Equipment("Boots of Ember", 0, 3, 7, 133),
+
+        // Initialize equipment list for the act
+        this.equipmentList = List.of(
+                new Equipment("Boots of Ember", 0, 3, 7, 133),
                 new Equipment("Helmet of Aegis", 0, 7, 0, 200),
                 new Equipment("Chestplate of Inferno", 3, 4, 0, 267),
                 new Equipment("Pants of Molten Grit", 0, 3, 0, 160),
                 new Equipment("Amulet of Fire", 0, 0, 4, 67),
-                new Equipment("Sword of the Titan", 5, 0, 0, 400));
-        this.shopItemPool = List.of(new Equipment("Fiery Boots", 1, 3, 3, 160),
+                new Equipment("Sword of the Titan", 5, 0, 0, 400)
+        );
+
+        // Initialize the shop with a pool of items
+        this.shopItemPool = List.of(
+                new Equipment("Fiery Boots", 1, 3, 3, 160),
                 new Equipment("Obsidian Helmet", 0, 9, 0, 240),
                 new Equipment("Hellspawn Rings", 7, 7, 0, 333),
                 new Equipment("Extra Stealth Pants", 0, 4, 2, 133),
@@ -51,63 +65,90 @@ public class ActTwo {
                 new Equipment("Dragon's Chestplate", 9, 11, 0, 520),
                 new Equipment("Riftblade Sword", 13, 0, 0, 700),
                 new Equipment("Timeworn Amulet", 0, 0, 11, 450),
-                new Equipment("Hell-Chain Boots", 3, 3, 5, 300));
+                new Equipment("Hell-Chain Boots", 3, 3, 5, 300)
+        );
         this.shop = new Shop(this.shopItemPool);
     }
 
+    /**
+     * Retrieves the list of equipment available in ActTwo.
+     * @return List of equipment
+     */
     public List<Equipment> getEquipmentList() {
         return this.equipmentList;
     }
 
+    /**
+     * Retrieves the GameMap instance for ActTwo.
+     * @return The GameMap of ActTwo
+     */
     public GameMap getGameMap() {
         return this.gameMap;
     }
 
+    /**
+     * Allows the player to interact with the shop, including buying, selling, and buying back items.
+     * @param player The player interacting with the shop
+     */
     public void visitShop(Player player) {
-        while(true) {
+        while (true) {
             System.out.println("\nWelcome to the shop! What would you like to do?");
             System.out.println("1. Buy Items");
             System.out.println("2. Sell Items");
             System.out.println("3. Buy Back Items");
             System.out.println("4. Leave the Shop");
+
+            // Get the player's choice
             int choice = GameLogic.readInt("Enter your choice: ", 4);
+
             switch (choice) {
                 case 1:
+                    // Restocking the shop and showing available items
                     this.shop.restockShop();
                     this.shop.showShopItems();
+
+                    // Asking the player which item they would like to buy
                     int buyChoice = GameLogic.readInt("Which item would you like to buy? (Enter number or 6 to cancel): ", 6);
                     if (buyChoice == 6) {
                         System.out.println("You decided not to buy anything.");
                         break;
                     }
 
+                    // Handling item purchase
                     this.shop.buyItem(player, buyChoice);
                     break;
+
                 case 2:
                     List<String> inventory = player.getInventory();
+
                     if (inventory.isEmpty()) {
                         System.out.println("You have no items to sell.");
                     } else {
                         System.out.println("Your inventory:");
 
-                        for(int i = 0; i < inventory.size(); ++i) {
-                            String itemName = (String)inventory.get(i);
+                        // Displaying the player's inventory
+                        for (int i = 0; i < inventory.size(); ++i) {
+                            String itemName = inventory.get(i);
                             Equipment selectedItem = player.getSelectedItem(i + 1);
                             if (selectedItem != null && !itemName.contains("Key")) {
-                                System.out.println(i + 1 + ". " + itemName + " (Strength: " + selectedItem.getStrengthBoost() + ", Defense: " + selectedItem.getDefenseBoost() + ", Speed: " + selectedItem.getSpeedBoost() + ", Price: " + (double)selectedItem.getPrice() * (double)0.5F + ")");
+                                System.out.println(i + 1 + ". " + itemName + " (Strength: " + selectedItem.getStrengthBoost() + ", Defense: " + selectedItem.getDefenseBoost() + ", Speed: " + selectedItem.getSpeedBoost() + ", Price: " + (double) selectedItem.getPrice() * 0.5F + ")");
                             }
                         }
 
+                        // Asking the player which item to sell
                         int sellChoice = GameLogic.readInt("Which item would you like to sell? (Enter number or " + (inventory.size() + 1) + " to cancel): ", inventory.size() + 1);
                         if (sellChoice == inventory.size() + 1) {
                             System.out.println("You decided not to sell anything.");
                             continue;
                         }
 
+                        // Handling item selling
                         this.shop.sellItem(player, sellChoice);
                     }
                     break;
+
                 case 3:
+                    // Showing buyback items and prompting player
                     this.shop.showBuybackItems();
                     int buyBackChoice = GameLogic.readInt("Which item would you like to buy back? (Enter number or " + (this.shop.getBuybackInventorySize() + 1) + " to cancel): ", this.shop.getBuybackInventorySize() + 1);
                     if (buyBackChoice == this.shop.getBuybackInventorySize() + 1) {
@@ -115,12 +156,16 @@ public class ActTwo {
                         break;
                     }
 
+                    // Handling item buyback
                     this.shop.buyBackItem(player, buyBackChoice);
                     break;
+
                 case 4:
+                    // Exiting the shop
                     System.out.println("You leave the shop. Come back anytime!");
                     GameLogic.anythingToContinue();
                     return;
+
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }

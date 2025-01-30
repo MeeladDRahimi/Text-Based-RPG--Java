@@ -1,5 +1,13 @@
+/**
+ * The Story class handles the narrative and dialogue for the game.
+ * It provides methods to print out the different parts of the story,
+ * including the prologue, each act, and special dialogues for the player.
+ */
 public class Story {
 
+    /**
+     * Prints the introductory part of the story, leading into the player's arrival in the hellscape.
+     */
     public static void printIntroPartOne() {
         GameLogic.clearConsole();
         boldRedTextColor();
@@ -10,9 +18,9 @@ public class Story {
                 "\nYou only know that you need to find a way out");
         GameLogic.anythingToContinue();
         GameLogic.clearConsole();
-        System.out.println("You extend your hands and feel a wall. You must be inside of something..." +
-                "\nYou frantically push up on the ceiling and feel a burst of heat and light come in." +
-                "\nYou step out of a crate and see a hell-scape around you." +
+        System.out.println("You extend your hands and feel a wall. You must be inside of something... " + "" +
+                "\nYou frantically push up on the ceiling and feel a burst of heat and light come in. " +
+                "\nYou step out of a crate and see a hell-scape around you. " +
                 "\nThe screams become louder and louder- and then silence...");
         GameLogic.anythingToContinue();
         GameLogic.clearConsole();
@@ -23,6 +31,9 @@ public class Story {
                 "\nDavaiel: What's you name again???");
     }
 
+    /**
+     * Prints the second part of the introduction, where Davaiel explains the player's situation.
+     */
     public static void printIntroPartTwo() {
         GameLogic.clearConsole();
         System.out.println("Davaiel: Oh... " + GameLogic.currentGameState.getPlayerName()
@@ -46,7 +57,11 @@ public class Story {
         GameLogic.anythingToContinue();
     }
 
+    /**
+     * Prints the story for Act 1, introducing the player to the outermost circle and Ashen Field.
+     */
     public static void ActOneStory() {
+        GameLogic.clearConsole();
         boldRedTextColor();
         GameLogic.printHeading("ACT I");
         resetTextColor();
@@ -63,6 +78,9 @@ public class Story {
         GameLogic.clearConsole();
     }
 
+    /**
+     * Prints the story for Act 2, where the player moves deeper into Hell, encountering new dangers.
+     */
     public static void ActTwoStory() {
         boldRedTextColor();
         GameLogic.printHeading("ACT II - The Infernal Descent");
@@ -88,6 +106,9 @@ public class Story {
         GameLogic.clearConsole();
     }
 
+    /**
+     * Prints the story for Act 3, where the player must face the Infernal Spire and its dangers.
+     */
     public static void ActThreeStory() {
         boldRedTextColor();
         GameLogic.printHeading("ACT III - Soul Hunger");
@@ -108,6 +129,9 @@ public class Story {
         GameLogic.clearConsole();
     }
 
+    /**
+     * Prints the story for Act 4, where the player reaches the Core of Hell to face the final challenges.
+     */
     public static void ActFourStory() {
         boldRedTextColor();
         GameLogic.printHeading("ACT IV - The Core of Hell");
@@ -133,6 +157,9 @@ public class Story {
         GameLogic.clearConsole();
     }
 
+    /**
+     * Prints the final boss dialogue and provides choices for the player to make.
+     */
     public static void finalBossDialogue() {
         GameLogic.clearConsole();
         int choice;
@@ -163,14 +190,17 @@ public class Story {
         System.out.println("Davaiel: Alright anyways I doubt you would fight an old man. You're stuck here forev-");
     }
 
+    /**
+     * Prints the end game dialogue, revealing the fate of the player and a humorous twist.
+     */
     public static void endGameDialogue() {
         GameLogic.clearConsole();
         System.out.println("After the fateful warrior slashed down the lord of hell, a beam of light came down onto him..." +
                 "\nNo one knows of what became of him");
         GameLogic.anythingToContinue();
-                System.out.println("And he's still here...wait let me check the records..." +
-                        "\nTurns out the fateful warriors name was in the records all along..." +
-                        "\n'Was a Philadelphia Eagles fan and enjoyed pineapple on pizza.' wow.");
+        System.out.println("And he's still here...wait let me check the records..." +
+                "\nTurns out the fateful warriors name was in the records all along..." +
+                "\n'Was a Philadelphia Eagles fan and enjoyed pineapple on pizza.' wow.");
         GameLogic.anythingToContinue();
         GameLogic.clearConsole();
         boldRedTextColor();
@@ -180,18 +210,23 @@ public class Story {
         GameLogic.anythingToContinue();
     }
 
+    /**
+     * Resets the text color to the default terminal color.
+     */
     public static void resetTextColor() {
         System.out.print("\u001b[0m");
     }
 
+    /**
+     * Makes the text bold.
+     */
     public static void boldText() {
         System.out.print("\u001b[1m");
     }
 
-    public static void redTextColor() {
-        System.out.print("\u001b[31m");
-    }
-
+    /**
+     * Makes the text bold and red.
+     */
     public static void boldRedTextColor() {
         System.out.println("\u001b[1m\u001b[31m");
     }

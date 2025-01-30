@@ -2,28 +2,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the fourth act in the game, managing the game map, equipment, and shop interactions.
+ * This act involves navigating various areas, acquiring equipment, and engaging in the shop interface.
+ */
 public class ActFour {
     private GameMap gameMap;
     private List<Equipment> equipmentList;
     private Shop shop;
     private List<Equipment> shopItemPool;
 
+    /**
+     * Constructs the ActFour instance, initializing the game map, equipment list, and shop item pool.
+     * This setup defines the areas the player can visit and the items available for purchase.
+     */
     public ActFour() {
-        Map<String, List<String>> map = new HashMap();
+        // Creating the game map with connected areas
+        Map<String, List<String>> map = new HashMap<>();
         map.put("The Blazing Chasm", List.of("Hellstorm Arena", "The Blood Furnace", "The Screaming Pit"));
         map.put("Hellstorm Arena", List.of("The Blazing Chasm", "The Blood Furnace", "The Eternal Flame"));
         map.put("The Blood Furnace", List.of("The Blazing Chasm", "Hellstorm Arena", "The Eternal Flame"));
         map.put("The Screaming Pit", List.of("The Blazing Chasm", "The Eternal Flame", "The Gate of Despair"));
         map.put("The Eternal Flame", List.of("Hellstorm Arena", "The Blood Furnace", "The Screaming Pit"));
         map.put("The Gate of Despair", List.of("The Screaming Pit", "The Eternal Flame", "Hellstorm Arena"));
+
+        // Initialize the game map with a starting point: "The Blazing Chasm"
         this.gameMap = new GameMap(map, "The Blazing Chasm");
-        this.equipmentList = List.of(new Equipment("Boots of the Infernal Beast", 0, 5, 13, 236),
+
+        // Initializing a list of equipment available in Act Four
+        this.equipmentList = List.of(
+                new Equipment("Boots of the Infernal Beast", 0, 5, 13, 236),
                 new Equipment("Helmet of the Immortal Blaze", 0, 13, 0, 355),
                 new Equipment("Chestplate of the Worldfire", 5, 7, 0, 474),
                 new Equipment("Pants of Molten Rage", 0, 5, 0, 284),
                 new Equipment("Amulet of the Apocalypse", 0, 0, 8, 118),
-                new Equipment("Sword of the Eternal Flame", 9, 0, 0, 744));
-        this.shopItemPool = List.of(new Equipment("Demon's Fury Boots", 1, 5, 5, 284),
+                new Equipment("Sword of the Eternal Flame", 9, 0, 0, 744)
+        );
+
+        // Initializing a list of items available in the shop pool for Act Four
+        this.shopItemPool = List.of(
+                new Equipment("Demon's Fury Boots", 1, 5, 5, 284),
                 new Equipment("Helmet of Hell's Lord", 0, 15, 0, 426),
                 new Equipment("Hellspawn Armor Plating", 12, 12, 0, 592),
                 new Equipment("Spectral Pants", 0, 6, 4, 236),
@@ -52,77 +70,107 @@ public class ActFour {
                 new Equipment("Chestplate of Infernal Power", 16, 14, 0, 860),
                 new Equipment("Spectral Hunter Pants", 2, 9, 8, 330),
                 new Equipment("Amulet of Hell's Fury", 0, 0, 14, 650),
-                new Equipment("Void Reaver Sword", 19, 0, 3, 1100));
+                new Equipment("Void Reaver Sword", 19, 0, 3, 1100)
+        );
+
+        // Initialize the shop with the item pool for Act Four
         this.shop = new Shop(this.shopItemPool);
     }
 
+    /**
+     * Returns the list of equipment available for Act Four.
+     *
+     * @return List of Equipment objects representing the available items.
+     */
     public List<Equipment> getEquipmentList() {
         return this.equipmentList;
     }
 
+    /**
+     * Returns the current game map for Act Four.
+     *
+     * @return The GameMap object that contains the areas and connections.
+     */
     public GameMap getGameMap() {
         return this.gameMap;
     }
 
+    /**
+     * Provides the player with an interface to interact with the shop:
+     * Buy items, sell items, buy back items, or leave the shop.
+     *
+     * @param player The Player object that is interacting with the shop.
+     */
     public void visitShop(Player player) {
         while(true) {
+            // Displaying shop menu options
             System.out.println("\nWelcome to the shop! What would you like to do?");
             System.out.println("1. Buy Items");
             System.out.println("2. Sell Items");
             System.out.println("3. Buy Back Items");
             System.out.println("4. Leave the Shop");
+
+            // Reading player's menu choice for shop interaction
             int choice = GameLogic.readInt("Enter your choice: ", 4);
+
             switch (choice) {
-                case 1:
-                    this.shop.restockShop();
-                    this.shop.showShopItems();
+                case 1:  // Buy Items
+                    this.shop.restockShop();  // Restocking the shop with new items
+                    this.shop.showShopItems();  // Showing the items available for purchase
                     int buyChoice = GameLogic.readInt("Which item would you like to buy? (Enter number or 6 to cancel): ", 6);
                     if (buyChoice == 6) {
                         System.out.println("You decided not to buy anything.");
                         break;
                     }
-
+                    // Processing item purchase
                     this.shop.buyItem(player, buyChoice);
                     break;
-                case 2:
+
+                case 2:  // Sell Items
                     List<String> inventory = player.getInventory();
                     if (inventory.isEmpty()) {
                         System.out.println("You have no items to sell.");
                     } else {
+                        // Displaying player's inventory for selling items
                         System.out.println("Your inventory:");
-
                         for(int i = 0; i < inventory.size(); ++i) {
-                            String itemName = (String)inventory.get(i);
+                            String itemName = inventory.get(i);
                             Equipment selectedItem = player.getSelectedItem(i + 1);
                             if (selectedItem != null && !itemName.contains("Key")) {
-                                System.out.println(i + 1 + ". " + itemName + " (Strength: " + selectedItem.getStrengthBoost() + ", Defense: " + selectedItem.getDefenseBoost() + ", Speed: " + selectedItem.getSpeedBoost() + ", Price: " + (double)selectedItem.getPrice() * (double)0.5F + ")");
+                                System.out.println(i + 1 + ". " + itemName + " (Strength: " + selectedItem.getStrengthBoost() +
+                                        ", Defense: " + selectedItem.getDefenseBoost() + ", Speed: " + selectedItem.getSpeedBoost() +
+                                        ", Price: " + (double)selectedItem.getPrice() * 0.5F + ")");
                             }
                         }
-
                         int sellChoice = GameLogic.readInt("Which item would you like to sell? (Enter number or " + (inventory.size() + 1) + " to cancel): ", inventory.size() + 1);
                         if (sellChoice == inventory.size() + 1) {
                             System.out.println("You decided not to sell anything.");
                             continue;
                         }
-
+                        // Processing item sale
                         this.shop.sellItem(player, sellChoice);
                     }
                     break;
-                case 3:
+
+                case 3:  // Buy Back Items
+                    // Displaying items available for buyback from the shop
                     this.shop.showBuybackItems();
                     int buyBackChoice = GameLogic.readInt("Which item would you like to buy back? (Enter number or " + (this.shop.getBuybackInventorySize() + 1) + " to cancel): ", this.shop.getBuybackInventorySize() + 1);
                     if (buyBackChoice == this.shop.getBuybackInventorySize() + 1) {
                         System.out.println("You decided not to buy back anything.");
                         break;
                     }
-
+                    // Processing item buyback
                     this.shop.buyBackItem(player, buyBackChoice);
                     break;
-                case 4:
+
+                case 4:  // Leave the shop
                     System.out.println("You leave the shop. Come back anytime!");
-                    GameLogic.anythingToContinue();
-                    return;
+                    GameLogic.anythingToContinue();  // Pause for player input to continue
+                    return;  // Exit the shop interaction
+
                 default:
+                    // Invalid choice handling
                     System.out.println("Invalid choice. Please try again.");
             }
         }

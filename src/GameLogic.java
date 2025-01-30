@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * The GameLogic class manages the core game mechanics, including player progression,
+ * game state management, and interactions with different acts and locations.
+ */
 public class GameLogic {
     static Scanner scanner;
-    static Player player;
+    public static Player player;
     static GameMap gameMap;
     static Set<String> defeatedBastions;
     private static boolean playerHasDefeatedBoundBoss;
@@ -20,6 +24,12 @@ public class GameLogic {
     public GameLogic() {
     }
 
+    /**
+     * Reads an integer input from the user within a given range.
+     * @param prompt The prompt message to display.
+     * @param userChoice The maximum valid choice number.
+     * @return The validated integer input.
+     */
     public static int readInt(String prompt, int userChoice) {
         int input;
         do {
@@ -36,6 +46,9 @@ public class GameLogic {
         return input;
     }
 
+    /**
+     * Clears the console by printing multiple new lines.
+     */
     public static void clearConsole() {
         for(int i = 0; i < 100; ++i) {
             System.out.println();
@@ -43,6 +56,10 @@ public class GameLogic {
 
     }
 
+    /**
+     * Prints a separator line of a given length.
+     * @param n The number of dashes to print.
+     */
     public static void printSeperator(int n) {
         for(int i = 0; i < n; ++i) {
             System.out.print("-");
@@ -51,17 +68,27 @@ public class GameLogic {
         System.out.println();
     }
 
+    /**
+     * Prints a formatted heading.
+     * @param title The title to display.
+     */
     public static void printHeading(String title) {
         printSeperator(30);
         System.out.println(title);
         printSeperator(30);
     }
 
+    /**
+     * Waits for user input to proceed.
+     */
     public static void anythingToContinue() {
         System.out.println("\nEnter anything to continue...");
         scanner.next();
     }
 
+    /**
+     * Starts the game by either loading an existing save or initializing a new game.
+     */
     public static void startGame() {
         currentGameState = GameSaver.loadGame("gameSave.dat");
         if (currentGameState != null) {
@@ -96,6 +123,9 @@ public class GameLogic {
         gameLoop();
     }
 
+    /**
+     * Saves the current game state and exits the game.
+     */
     public static void saveAndQuit() {
         currentGameState = new GameState(player, getCurrentAct(), playerHasDefeatedBoundBoss);
         GameSaver.saveGame(currentGameState, "gameSave.dat");
@@ -103,6 +133,9 @@ public class GameLogic {
         isRunning = false;
     }
 
+    /**
+     * Displays the player's character information.
+     */
     public static void characterInfo() {
         clearConsole();
         Story.boldText();
@@ -135,6 +168,9 @@ public class GameLogic {
         anythingToContinue();
     }
 
+    /**
+     * Prints the main game menu with available actions.
+     */
     public static void printMenu() {
         clearConsole();
         Story.boldText();
@@ -160,14 +196,14 @@ public class GameLogic {
 
     }
 
+    /**
+     * The main game loop that runs based on the current act.
+     */
     public static void gameLoop() {
         if (getCurrentAct() == 1) {
             ActOne actOne = new ActOne();
             gameMap = actOne.getGameMap();
             List<Equipment> equipmentList = actOne.getEquipmentList();
-            boolean actOneCompleted = false;
-            boolean actTwoCompleted = false;
-            boolean actThreeCompleted = false;
 
             while(isRunning && currentAct == 1) {
                 printMenu();
@@ -189,7 +225,6 @@ public class GameLogic {
                 } else if (input == 8) {
                     travelToBoundGate();
                     if (playerHasDefeatedBoundBoss) {
-                        actOneCompleted = true;
                         startActTwo();
                     }
                 } else if (input == 9) {
@@ -205,8 +240,6 @@ public class GameLogic {
             currentAct = 2;
             gameMap = actTwo.getGameMap();
             List equipmentList = actTwo.getEquipmentList();
-            boolean actOneCompleted = false;
-            boolean actTwoCompleted = false;
 
             while(isRunning && currentAct == 2) {
                 printMenu();
@@ -228,7 +261,6 @@ public class GameLogic {
                 } else if (input == 8) {
                     travelToBoundGate();
                     if (playerHasDefeatedBoundBoss) {
-                        actTwoCompleted = true;
                         startActThree();
                     }
                 } else if (input == 9) {
@@ -244,8 +276,6 @@ public class GameLogic {
             currentAct = 3;
             gameMap = actThree.getGameMap();
             List equipmentList = actThree.getEquipmentList();
-            boolean actTwoCompleted = false;
-            boolean actThreeCompleted = false;
 
             while(isRunning && currentAct == 3) {
                 printMenu();
@@ -267,7 +297,6 @@ public class GameLogic {
                 } else if (input == 8) {
                     travelToBoundGate();
                     if (playerHasDefeatedBoundBoss) {
-                        actThreeCompleted = true;
                         startActFour();
                     }
                 } else if (input == 9) {
@@ -283,8 +312,6 @@ public class GameLogic {
             currentAct = 4;
             gameMap = actFour.getGameMap();
             List equipmentList = actFour.getEquipmentList();
-            boolean finalBossDefeated = false;
-            boolean actThreeCompleted = false;
 
             while(isRunning && currentAct == 4) {
                 printMenu();
@@ -351,10 +378,16 @@ public class GameLogic {
 
     }
 
+    /**
+     * Resets the status indicating whether the player has defeated the Bound Boss.
+     */
     private static void resetBoundBossStatus() {
         playerHasDefeatedBoundBoss = false;
     }
 
+    /**
+     * Starts Act Two of the game, resetting necessary progress and advancing the story.
+     */
     private static void startActTwo() {
         defeatedBastions.clear();
         player.resetBastionKey();
@@ -365,6 +398,9 @@ public class GameLogic {
         anythingToContinue();
     }
 
+    /**
+     * Starts Act Three of the game, resetting necessary progress and advancing the story.
+     */
     private static void startActThree() {
         defeatedBastions.clear();
         player.resetBastionKey();
@@ -375,6 +411,9 @@ public class GameLogic {
         anythingToContinue();
     }
 
+    /**
+     * Starts Act Four of the game, resetting necessary progress and advancing the story.
+     */
     private static void startActFour() {
         defeatedBastions.clear();
         player.resetBastionKey();
@@ -385,6 +424,11 @@ public class GameLogic {
         anythingToContinue();
     }
 
+    /**
+     * Handles the player's entry into a Bastion, triggering battles and rewards.
+     *
+     * @param equipmentList The list of equipment available as rewards.
+     */
     private static void enterBastion(List<Equipment> equipmentList) {
         String currentBastion = gameMap.getCurrRegionName();
         if (defeatedBastions.contains(currentBastion)) {
@@ -416,8 +460,6 @@ public class GameLogic {
                 BastionBoss bastionBoss = new BastionBoss();
                 new BattleSequence(player, bastionBoss);
                 if (bastionBoss.getHp() > 0) {
-                    System.out.println("You suck");
-                    anythingToContinue();
                     return;
                 }
 
@@ -436,6 +478,9 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Allows the player to manage their equipment inventory.
+     */
     public static void manageEquipment() {
         clearConsole();
         boolean exit = false;
@@ -523,6 +568,9 @@ public class GameLogic {
 
     }
 
+    /**
+     * Allows the player to see what keys they have
+     */
     public static void checkKeys() {
         List<String> keys = player.getKey();
         boolean hasKeys = false;
@@ -544,6 +592,11 @@ public class GameLogic {
         anythingToContinue();
     }
 
+    /**
+     * Checks for player to have bound key to proceed to final boss of the act.
+     * If the player loses, they keep the key to retry, otherwise they lose the key
+     * And continue to the next act or retrieve key for final boss of the game
+     */
     public static void travelToBoundGate() {
         List<String> keys = player.getKey();
         boolean hasBoundKey = false;
@@ -598,10 +651,18 @@ public class GameLogic {
 
     }
 
+    /**
+     * Retrieves the currentAct num
+     */
     public static int getCurrentAct() {
         return currentAct;
     }
 
+    /**
+     * Default function for generic shop
+     *
+     * @return list of Equipment for sale
+     */
     private static List<Equipment> generateDefaultShopPool() {
         List<Equipment> defaultItemPool = new ArrayList();
         defaultItemPool.add(new Equipment("Iron Sword", 50, 10, 0, 0));
@@ -610,6 +671,9 @@ public class GameLogic {
         return defaultItemPool;
     }
 
+    /**
+     * Title screen with option to load or erase previous save
+     */
     public static void showTitleScreen() {
         titleGameState = GameSaver.loadGame("gameSave.dat");
         clearConsole();
