@@ -391,7 +391,7 @@ public class GameLogic {
             System.out.println("It's kinda empty in here.");
             anythingToContinue();
         } else {
-            int numEnemies = 0;
+            int numEnemies = 4;
             System.out.println("Entering " + gameMap.getCurrRegionName() + "'s Bastion...");
 
             while(player.getHp() > 0 && numEnemies > 0) {

@@ -102,10 +102,38 @@ public class BattleSequence {
         int baseDamage = attacker.getStrength();
         int accuracy = 100;
 
-        switch (attackType) {
-            case "light" -> { baseDamage = Math.max(baseDamage / 2, 1); accuracy = enemyStaggered ? 100 : 95; }
-            case "medium" -> { baseDamage = (int)(baseDamage * 0.75); accuracy = enemyStaggered ? 100 : 85; }
-            case "heavy" -> { baseDamage *= 2; accuracy = enemyStaggered ? 90 : 60; }
+        if(attacker instanceof Player) {
+            baseDamage = player.getEffectiveDamage();
+            switch (attackType) {
+                case "light" -> {
+                    baseDamage = Math.max(baseDamage / 2, 1);
+                    accuracy = enemyStaggered ? 100 : 95;
+                }
+                case "medium" -> {
+                    baseDamage = (int) (baseDamage * 0.75);
+                    accuracy = enemyStaggered ? 100 : 85;
+                }
+                case "heavy" -> {
+                    baseDamage *= 2;
+                    accuracy = enemyStaggered ? 90 : 60;
+                }
+            }
+        }
+        else{
+            switch (attackType) {
+                case "light" -> {
+                    baseDamage = Math.max(baseDamage / 2, 1);
+                    accuracy = enemyStaggered ? 100 : 95;
+                }
+                case "medium" -> {
+                    baseDamage = (int) (baseDamage * 0.75);
+                    accuracy = enemyStaggered ? 100 : 85;
+                }
+                case "heavy" -> {
+                    baseDamage *= 2;
+                    accuracy = enemyStaggered ? 90 : 60;
+                }
+            }
         }
 
         // Apply elemental effectiveness if player is attacking
@@ -115,9 +143,15 @@ public class BattleSequence {
 
         if (new Random().nextInt(100) < accuracy) {
             int damage = Math.max(baseDamage - defender.getDefense(), 1);
-            defender.setHp(defender.getHp() - damage);
-            System.out.println(attacker.getName() + " used a " + attackType + " attack dealing " + damage + " damage!");
-        } else {
+            if (defender instanceof Player) {
+                damage = Math.max(baseDamage - ((Player) defender).getEffectiveDefense(), 1);
+                defender.setHp(defender.getHp() - damage);
+                System.out.println(attacker.getName() + " used a " + attackType + " attack dealing " + damage + " damage!");
+            } else if (defender instanceof  Enemy) {
+                defender.setHp(defender.getHp() - damage);
+                System.out.println(attacker.getName() + " used a " + attackType + " attack dealing " + damage + " damage!");
+        }
+        } else{
             System.out.println(attacker.getName() + " missed their attack!");
         }
     }
